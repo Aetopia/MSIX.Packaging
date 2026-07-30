@@ -29,9 +29,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           $Path = "$(Get-Location)\Certificate.pfx"
-          $Bytes = [System.Convert]::FromBase64String(PRIVATE_CERTIFICATE_BASE64)
+          $Bytes = [System.Convert]::FromBase64String($ENV:PRIVATE_CERTIFICATE_BASE64)
 
-                    
           dotnet tool install --tool-path . --prerelease sign
           echo $Path
           [System.IO.File]::WriteAllBytes($Path, $Bytes)
