@@ -13,6 +13,8 @@ jobs:
 
       - name: .NET 
         uses: actions/setup-dotnet@v6
+        with: 
+          dotnet-version: latest
 
       - name: Bulid 
         shell: powershell
