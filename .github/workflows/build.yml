@@ -22,5 +22,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          dotnet tool install --global sign
-          dotnet restore Test.Package.csproj
+          sign --version
