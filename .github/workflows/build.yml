@@ -18,8 +18,20 @@ jobs:
 
       - name: Build 
         shell: powershell
+
+        env:
+          PRIVATE_CERTIFICATE_BASE64: ${{ secrets.PRIVATE_CERTIFICATE_BASE64 }}
+          PRIVATE_CERTIFICATE_PASSWORD: ${{ secrets.PRIVATE_CERTIFICATE_PASSWORD }}
+          PRIVATE_CERTIFICATE_FINGERPRINT: ${{ secrets.PRIVATE_CERTIFICATE_FINGERPRINT }}
+
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
+          $Path = "$(Get-Location)\Certificate.pfx"
+          $Bytes = [System.Convert]::FromBase64String(PRIVATE_CERTIFICATE_BASE64)
+
+                    
           dotnet tool install --tool-path . --prerelease sign
+          echo $Path
+          [System.IO.File]::WriteAllBytes($Path, $Bytes)
