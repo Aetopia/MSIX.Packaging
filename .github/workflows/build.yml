@@ -22,4 +22,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          winget install --id Microsoft.WindowsSDK --silent --accept-package-agreements --accept-source-agreements
+          dotnet tool install --tool-path . --prerelease sign
