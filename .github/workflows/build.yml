@@ -28,11 +28,27 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          $Path = "$(Get-Location)\Certificate.pfx"
-          $Bytes = [System.Convert]::FromBase64String($ENV:PRIVATE_CERTIFICATE_BASE64)
-
           dotnet tool install --tool-path . --prerelease sign
-          [System.IO.File]::WriteAllBytes($Path, $Bytes)
+
+          $PrivateCertificatePath = "$(Get-Location)\Certificate.pfx"
+          $PrivateCertificateBytes = [System.Convert]::FromBase64String($ENV:PRIVATE_CERTIFICATE_BASE64)
+          [System.IO.File]::WriteAllBytes($PrivateCertificatePath,  $PrivateCertificateBytes)
+
+          $PublicCertificatePath = "$(Get-Location)\Certificate.cer"
+          $PublicCertificateBytes = [System.Convert]::FromBase64String($ENV:PRIVATE_CERTIFICATE_BASE64)
+          [System.IO.File]::WriteAllBytes($PublicCertificatePath,  $PublicCertificateBytes)
 
           dotnet publish "Test.Package.csproj"
-          ./sign.exe code certificate-store -cf "$Path" -p "$ENV:PRIVATE_CERTIFICATE_PASSWORD" -cfp "$ENV:PRIVATE_CERTIFICATE_FINGERPRINT" "AppPackages\Test.Package_Test\Test.Package.msix" -o "AppPackages\Test.Package.msix"
+          ./sign.exe code certificate-store -cf "$PrivateCertificatePath" -p "$ENV:PRIVATE_CERTIFICATE_PASSWORD" -cfp "$ENV:PRIVATE_CERTIFICATE_FINGERPRINT" "AppPackages\Test.Package_Test\Test.Package.msix" -o "AppPackages\Test.Package.msix"
+
+      - name: Package
+        uses: actions/upload-artifact@v7
+        with:
+           name: package
+           path: AppPackages\Test.Package.msix
+
+      - name: Certificate
+        uses: actions/upload-artifact@v7
+        with:
+           name: certificate
+           path: Certificate.cer
