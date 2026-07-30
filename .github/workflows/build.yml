@@ -8,10 +8,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v6
+      - name: Checkout
+        uses: actions/checkout@v7
 
-      - shell: powershell
+      - name: .NET 
+        uses: actions/setup-dotnet@v6
+
+      - name: Bulid 
+        shell: powershell
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
