@@ -16,10 +16,11 @@ jobs:
         with: 
           dotnet-version: latest
 
-      - name: Bulid 
+      - name: Build 
         shell: powershell
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          sign --version
+          dotnet new tool-manifest
+          dotnet tool install --global sign
