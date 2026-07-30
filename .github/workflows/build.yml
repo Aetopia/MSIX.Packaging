@@ -4,20 +4,17 @@ on:
   workflow_dispatch:
 
 jobs:
-    checkout:
-      runs-on: windows-latest
-      steps:
-        - uses: actions/checkout@7
-        - shell: powershell
-          run: |
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
+  build:
+    runs-on: windows-latest
 
-    build:
-      steps:
-        - runs-on: windows-latest
-        - uses: actions/setup-dotnet@v6
-        - shell: powershell
-          run: |
-            dotnet tool install --global sign
-            dotnet restore "Test.Package.csproj"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+
+      - shell: powershell
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          dotnet tool install --global sign
+          dotnet restore Test.Package.csproj
