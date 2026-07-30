@@ -20,6 +20,7 @@ jobs:
         shell: powershell
 
         env:
+          PUBLIC_CERTIFICATE_BASE64: ${{ secrets.PUBLIC_CERTIFICATE_BASE64 }}
           PRIVATE_CERTIFICATE_BASE64: ${{ secrets.PRIVATE_CERTIFICATE_BASE64 }}
           PRIVATE_CERTIFICATE_PASSWORD: ${{ secrets.PRIVATE_CERTIFICATE_PASSWORD }}
           PRIVATE_CERTIFICATE_FINGERPRINT: ${{ secrets.PRIVATE_CERTIFICATE_FINGERPRINT }}
@@ -35,7 +36,7 @@ jobs:
           [System.IO.File]::WriteAllBytes($PrivateCertificatePath,  $PrivateCertificateBytes)
 
           $PublicCertificatePath = "$(Get-Location)\Certificate.cer"
-          $PublicCertificateBytes = [System.Convert]::FromBase64String($ENV:PRIVATE_CERTIFICATE_BASE64)
+          $PublicCertificateBytes = [System.Convert]::FromBase64String($ENV:PUBLIC_CERTIFICATE_BASE64)
           [System.IO.File]::WriteAllBytes($PublicCertificatePath,  $PublicCertificateBytes)
 
           dotnet publish "Test.Package.csproj"
