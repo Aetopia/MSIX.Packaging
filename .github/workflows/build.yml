@@ -32,5 +32,7 @@ jobs:
           $Bytes = [System.Convert]::FromBase64String($ENV:PRIVATE_CERTIFICATE_BASE64)
 
           dotnet tool install --tool-path . --prerelease sign
-          echo $Path
           [System.IO.File]::WriteAllBytes($Path, $Bytes)
+
+          dotnet publish "Test.Package.csproj"
+          sign code certificate-store --certificate-file "$Path" --password "$ENV:PRIVATE_CERTIFICATE_PASSWORD" --certificate-fingerprint "$ENV:PRIVATE_CERTIFICATE_FINGERPRINT" "AppPackages\Test.Package_Test\Test.Package.msix"
