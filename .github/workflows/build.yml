@@ -7,17 +7,17 @@ jobs:
     checkout:
       runs-on: windows-latest
       steps:
-        uses: actions/checkout@7
-        shell: powershell
-        run: |
+        - uses: actions/checkout@7
+        - shell: powershell
+          run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
     build:
       steps:
-        shell: powershell
-        runs-on: windows-latest
-        uses: actions/setup-dotnet@v6
-        run: |
-          dotnet tool install --global sign
-          dotnet restore "Test.Package.csproj"
+        - runs-on: windows-latest
+        - uses: actions/setup-dotnet@v6
+        - shell: powershell
+          run: |
+            dotnet tool install --global sign
+            dotnet restore "Test.Package.csproj"
