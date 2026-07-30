@@ -1,0 +1,20 @@
+name: Build
+on:
+  workflow_dispatch:
+
+jobs:
+    checkout:
+      runs-on: windows-latest
+      uses: actions/checkout@7
+      shell: powershell
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    build:
+      shell: powershell
+      runs-on: windows-latest
+      uses: actions/setup-dotnet@v6
+      run: |
+        dotnet tool install --global sign
+        dotnet restore "Test.Package.csproj"
